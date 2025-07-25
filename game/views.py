@@ -2,8 +2,6 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.http import JsonResponse
-import json
-from django.views.decorators.http import require_POST
 
 from .forms import ReviewForm
 from .models import Review, GameState
@@ -42,9 +40,8 @@ def review_page(request):
 
 @login_required
 def leaderboard_view(request):
-    # Get all GameStates, order by money descending
-    leaderboard = GameState.objects.select_related('user').order_by('-money')
-    return render(request, "game/leaderboard.html", {"leaderboard": leaderboard})
+    users = User.objects.all().order_by('username')
+    return render(request, "game/leaderboard.html", {"users": users})
 
 
 @login_required
@@ -56,12 +53,9 @@ def delete_review(request):
 
 
 @login_required
-@require_POST
 def earn_money(request):
     gamestate = GameState.objects.get(user=request.user)
-    data = json.loads(request.body)
-    amount = data.get('amount', 10)  # Default to 10 if not provided
-    gamestate.money += amount
+    gamestate.money += 10  # or whatever amount you want to add
     gamestate.save()
     return JsonResponse({'money': gamestate.money})
 

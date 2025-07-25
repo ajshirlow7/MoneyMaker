@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login
 
+
 def home_page_view(request):
     print("User:", request.user, "Authenticated:", request.user.is_authenticated)
     form = UserCreationForm()
@@ -19,5 +20,6 @@ def register_view(request):
             # Render homepage with errors if form is invalid
             return render(request, "homepage.html", {"form": form})
     else:
+        
         return redirect("home")
 

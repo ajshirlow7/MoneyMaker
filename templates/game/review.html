@@ -21,56 +21,90 @@
         .star-rating label:hover ~ label {
             color: #ffc107;
         }
+        .review-card {
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            margin-bottom: 1.5rem;
+            background: #fff;
+        }
+        .review-header {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .review-rating {
+            color: #ffc107;
+            font-size: 1.2rem;
+        }
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
+            min-height: 100vh;
+        }
     </style>
 </head>
 <body>
-<div class="container mt-5">
-    <h1 class="mb-4">Leave a Review</h1>
-    <p class="mb-3 text-success">You are signed in as <strong>{{ request.user.username }}</strong>.</p>
-    <form method="post" class="mb-4">
-        {% csrf_token %}
-        <div class="mb-3">
-            <label class="form-label">Your Rating:</label>
-            <div class="star-rating d-flex flex-row justify-content-start">
-                {% for radio in form.rating %}
-                    {{ radio.tag }}<label for="{{ radio.id_for_label }}">&#9733;</label>
-                {% endfor %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card p-4 mb-4 shadow-sm">
+                <h2 class="mb-3 text-center">Leave a Review</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3 text-center">
+                        <label class="form-label d-block mb-2">Your Rating:</label>
+                        <div class="star-rating d-flex flex-row-reverse justify-content-center">
+                            {% for i in "54321" %}
+                                <input type="radio" name="rating" id="star{{ i }}" value="{{ i }}"
+                                    {% if forloop.last %}required{% endif %}
+                                    {% if form.rating.value|stringformat:"s" == i %}checked{% endif %}>
+                                <label for="star{{ i }}">&#9733;</label>
+                            {% endfor %}
+                        </div>
+                        {% if form.rating.errors %}
+                            <div class="text-danger small">{{ form.rating.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Your Review:</label>
+                        {{ form.text }}
+                        {% if form.text.errors %}
+                            <div class="text-danger small">{{ form.text.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <button type="submit" class="btn btn-success px-4">
+                            {% if user_review %}Update Review{% else %}Post Review{% endif %}
+                        </button>
+                        {% if user_review %}
+                            <a href="{% url 'delete_review' %}" class="btn btn-outline-danger ms-2">Delete Review</a>
+                        {% endif %}
+                    </div>
+                </form>
             </div>
+            <h3 class="mb-3">All Reviews</h3>
+            {% for review in all_reviews %}
+                <div class="card review-card p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="review-header">{{ review.user.username|default:"[deleted user]" }}</span>
+                        <span class="review-rating">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= review.rating %}
+                                    &#9733;
+                                {% else %}
+                                    <span style="color:#ddd">&#9733;</span>
+                                {% endif %}
+                            {% endfor %}
+                            ({{ review.rating }})
+                        </span>
+                    </div>
+                    <div class="mb-2">{{ review.text }}</div>
+                    <div class="text-muted small">{{ review.created_at|date:"M d, Y H:i" }}</div>
+                </div>
+            {% empty %}
+                <div class="alert alert-info">No reviews yet.</div>
+            {% endfor %}
+            <a href="{% url 'home' %}" class="btn btn-secondary mt-4 w-100">Back to Home</a>
         </div>
-        <div class="mb-3">
-            <label class="form-label">Your Review:</label>
-            {{ form.text }}
-        </div>
-        <button type="submit" class="btn btn-primary">{% if user_review %}Update{% else %}Submit{% endif %} Review</button>
-        {% if user_review %}
-            <a href="{% url 'delete_review' %}" class="btn btn-danger ms-2">Delete Review</a>
-        {% endif %}
-    </form>
-
-    <h2 class="mb-3">All Reviews</h2>
-    {% for review in all_reviews %}
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title mb-1">
-                    {{ review.user.username }}
-                    <span class="text-warning">
-                        {% for i in "12345"|make_list %}
-                            {% if forloop.counter <= review.rating %}
-                                &#9733;
-                            {% else %}
-                                <span style="color:#ddd">&#9733;</span>
-                            {% endif %}
-                        {% endfor %}
-                    </span>
-                </h5>
-                <p class="card-text">{{ review.text }}</p>
-                <p class="card-text"><small class="text-muted">{{ review.created_at|date:"M d, Y H:i" }}</small></p>
-            </div>
-        </div>
-    {% empty %}
-        <p>No reviews yet.</p>
-    {% endfor %}
-    <a href="{% url 'home' %}" class="btn btn-secondary mt-3">Back to Home</a>
+    </div>
 </div>
 </body>
 </html>
