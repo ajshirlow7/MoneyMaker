@@ -86,7 +86,7 @@
         <a href="{% url 'home' %}" class="btn btn-secondary mt-5">Back to Home</a>
     </div>
     <script>
-        let money = 0;
+        let money = parseInt(document.getElementById("money").textContent);
         let multiplier = 1;
         let upgradeBought = false;
 
@@ -102,7 +102,11 @@
             pizza: 2000
         };
 
-        let managerIntervals = {};
+        let isBusinessRunning = {
+            lemonade: false,
+            carwash: false,
+            pizza: false
+        };
 
         function earnMoney(amount) {
             fetch("{% url 'earn_money' %}", {
@@ -116,6 +120,7 @@
             .then(response => response.json())
             .then(data => {
                 document.getElementById("money").textContent = data.money;
+                money = data.money;
             });
         }
 
@@ -138,41 +143,23 @@
                 document.getElementById(business + 'ManagerBtn').textContent = "Manager Hired!";
                 document.getElementById(business + 'ManagerBtn').disabled = true;
                 document.getElementById(business + 'ManagerStatus').textContent = "Automated!";
-                // Disable manual start button
-                document.getElementById(business + 'Btn').disabled = true;
+                console.log('Updating:', business + 'ManagerStatus', document.getElementById(business + 'ManagerStatus'));
                 autoRunBusiness(business);
             }
         }
 
         function autoRunBusiness(business) {
-            if (managerIntervals[business]) return;
-
-            let time, earningsPerClick;
-            if (business === 'lemonade') {
-                time = 1000; earningsPerClick = 1;
-            } else if (business === 'carwash') {
-                time = 3000; earningsPerClick = 10;
-            } else if (business === 'pizza') {
-                time = 7000; earningsPerClick = 100;
+            function run() {
+                startBusiness(business, () => {
+                    if (managers[business]) {
+                        setTimeout(run, 0);
+                    }
+                });
             }
-
-            let progressBar = document.getElementById(business + 'Progress');
-            let elapsed = 0;
-            let interval = 50;
-
-            managerIntervals[business] = setInterval(() => {
-                elapsed += interval;
-                let percent = Math.min(100, (elapsed / time) * 100);
-                progressBar.style.width = percent + '%';
-                if (elapsed >= time) {
-                    elapsed = 0;
-                    earnMoney(earningsPerClick);
-                    progressBar.style.width = '0%';
-                }
-            }, interval);
+            run();
         }
 
-        function startBusiness(business) {
+        function startBusiness(business, callback) {
             let progressBar, earningsPerClick, time, btn;
 
             if (business === 'lemonade') {
@@ -192,8 +179,10 @@
                 time = 7000;
             }
 
-            // Disable the button while running
-            btn.disabled = true;
+            if (isBusinessRunning[business]) return;
+            isBusinessRunning[business] = true;
+
+            if (!managers[business]) btn.disabled = true;
             progressBar.style.width = '0%';
 
             let elapsed = 0;
@@ -205,9 +194,11 @@
 
                 if (elapsed >= time) {
                     clearInterval(timer);
-                    earnMoney(earningsPerClick);
+                    isBusinessRunning[business] = false;
+                    earnMoney(earningsPerClick * multiplier);
                     progressBar.style.width = '0%';
                     if (!managers[business]) btn.disabled = false;
+                    if (typeof callback === "function") callback();
                 }
             }, interval);
         }
@@ -225,6 +216,16 @@
                 }
             }
             return cookieValue;
+        }
+
+        // Auto-run businesses with managers on page load
+        for (let business in managers) {
+            if (managers[business]) {
+                autoRunBusiness(business);
+                document.getElementById(business + 'ManagerBtn').textContent = "Manager Hired!";
+                document.getElementById(business + 'ManagerBtn').disabled = true;
+                document.getElementById(business + 'ManagerStatus').textContent = "Automated!";
+            }
         }
     </script>
 </body>
