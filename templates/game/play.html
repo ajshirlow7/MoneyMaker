@@ -37,24 +37,39 @@
             <div class="col-md-4">
                 <div class="business-card text-center">
                     <h4>Lemonade Stand</h4>
-                    <p>Earns $1 per click</p>
-                    <button class="btn btn-success business-btn" onclick="earnMoney(1)">Click</button>
+                    <p>Earns $1 per click<br><small>Time: 1s</small></p>
+                    <div class="progress mb-2" style="height: 25px;">
+                        <div id="lemonadeProgress" class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <button class="btn btn-success business-btn mb-2" id="lemonadeBtn" onclick="startBusiness('lemonade')">Start</button>
+                    <button class="btn btn-outline-secondary business-btn" id="lemonadeManagerBtn" onclick="buyManager('lemonade')">Hire Manager ($100)</button>
+                    <div id="lemonadeManagerStatus" class="mt-2 text-success"></div>
                 </div>
             </div>
             <!-- Car Wash -->
             <div class="col-md-4">
                 <div class="business-card text-center">
                     <h4>Car Wash</h4>
-                    <p>Earns $10 per click</p>
-                    <button class="btn btn-primary business-btn" onclick="earnMoney(10)">Click</button>
+                    <p>Earns $10 per click<br><small>Time: 3s</small></p>
+                    <div class="progress mb-2" style="height: 25px;">
+                        <div id="carwashProgress" class="progress-bar bg-primary" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <button class="btn btn-primary business-btn mb-2" id="carwashBtn" onclick="startBusiness('carwash')">Start</button>
+                    <button class="btn btn-outline-secondary business-btn" id="carwashManagerBtn" onclick="buyManager('carwash')">Hire Manager ($500)</button>
+                    <div id="carwashManagerStatus" class="mt-2 text-success"></div>
                 </div>
             </div>
             <!-- Pizza Shop -->
             <div class="col-md-4">
                 <div class="business-card text-center">
                     <h4>Pizza Shop</h4>
-                    <p>Earns $100 per click</p>
-                    <button class="btn btn-warning business-btn" onclick="earnMoney(100)">Click</button>
+                    <p>Earns $100 per click<br><small>Time: 7s</small></p>
+                    <div class="progress mb-2" style="height: 25px;">
+                        <div id="pizzaProgress" class="progress-bar bg-warning" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <button class="btn btn-warning business-btn mb-2" id="pizzaBtn" onclick="startBusiness('pizza')">Start</button>
+                    <button class="btn btn-outline-secondary business-btn" id="pizzaManagerBtn" onclick="buyManager('pizza')">Hire Manager ($2000)</button>
+                    <div id="pizzaManagerStatus" class="mt-2 text-success"></div>
                 </div>
             </div>
         </div>
@@ -75,6 +90,20 @@
         let multiplier = 1;
         let upgradeBought = false;
 
+        let managers = {
+            lemonade: false,
+            carwash: false,
+            pizza: false
+        };
+
+        let managerCosts = {
+            lemonade: 100,
+            carwash: 500,
+            pizza: 2000
+        };
+
+        let managerIntervals = {};
+
         function earnMoney(amount) {
             money += amount * multiplier;
             document.getElementById('money').textContent = money;
@@ -89,6 +118,88 @@
                 document.getElementById('upgradeBtn').textContent = "Purchased!";
                 document.getElementById('upgradeBtn').disabled = true;
             }
+        }
+
+        function buyManager(business) {
+            if (!managers[business] && money >= managerCosts[business]) {
+                money -= managerCosts[business];
+                document.getElementById('money').textContent = money;
+                managers[business] = true;
+                document.getElementById(business + 'ManagerBtn').textContent = "Manager Hired!";
+                document.getElementById(business + 'ManagerBtn').disabled = true;
+                document.getElementById(business + 'ManagerStatus').textContent = "Automated!";
+                // Disable manual start button
+                document.getElementById(business + 'Btn').disabled = true;
+                autoRunBusiness(business);
+            }
+        }
+
+        function autoRunBusiness(business) {
+            if (managerIntervals[business]) return;
+
+            let time, earningsPerClick;
+            if (business === 'lemonade') {
+                time = 1000; earningsPerClick = 1;
+            } else if (business === 'carwash') {
+                time = 3000; earningsPerClick = 10;
+            } else if (business === 'pizza') {
+                time = 7000; earningsPerClick = 100;
+            }
+
+            let progressBar = document.getElementById(business + 'Progress');
+            let elapsed = 0;
+            let interval = 50;
+
+            managerIntervals[business] = setInterval(() => {
+                elapsed += interval;
+                let percent = Math.min(100, (elapsed / time) * 100);
+                progressBar.style.width = percent + '%';
+                if (elapsed >= time) {
+                    elapsed = 0;
+                    earnMoney(earningsPerClick);
+                    progressBar.style.width = '0%';
+                }
+            }, interval);
+        }
+
+        function startBusiness(business) {
+            let progressBar, earningsPerClick, time, btn;
+
+            if (business === 'lemonade') {
+                progressBar = document.getElementById('lemonadeProgress');
+                btn = document.getElementById('lemonadeBtn');
+                earningsPerClick = 1;
+                time = 1000;
+            } else if (business === 'carwash') {
+                progressBar = document.getElementById('carwashProgress');
+                btn = document.getElementById('carwashBtn');
+                earningsPerClick = 10;
+                time = 3000;
+            } else if (business === 'pizza') {
+                progressBar = document.getElementById('pizzaProgress');
+                btn = document.getElementById('pizzaBtn');
+                earningsPerClick = 100;
+                time = 7000;
+            }
+
+            // Disable the button while running
+            btn.disabled = true;
+            progressBar.style.width = '0%';
+
+            let elapsed = 0;
+            let interval = 50; // ms
+            let timer = setInterval(() => {
+                elapsed += interval;
+                let percent = Math.min(100, (elapsed / time) * 100);
+                progressBar.style.width = percent + '%';
+
+                if (elapsed >= time) {
+                    clearInterval(timer);
+                    earnMoney(earningsPerClick);
+                    progressBar.style.width = '0%';
+                    if (!managers[business]) btn.disabled = false;
+                }
+            }, interval);
         }
     </script>
 </body>
