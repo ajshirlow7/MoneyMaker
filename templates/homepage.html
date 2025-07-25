@@ -41,14 +41,26 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">MoneyMaker</a>
-            <div class="d-flex align-items-center">
-                {% if user.is_authenticated %}
-                    <span class="me-3 text-success">Signed in as <strong>{{ user.username }}</strong></span>
-                    <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
-                {% else %}
-                    <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
-                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
-                {% endif %}
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Play</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Leaderboards</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Leave a Review</a>
+                    </li>
+                </ul>
+                
             </div>
         </div>
     </nav>
@@ -57,6 +69,17 @@
     <div class="welcome-section">
         <h1>Welcome to the MoneyMaker App!</h1>
         <p>Start your journey to financial success. Register or log in to play the incremental clicker game!</p>
+    </div>
+
+    <!-- Centered Auth Buttons Below Welcome Section -->
+    <div class="d-flex justify-content-center mt-4">
+        {% if user.is_authenticated %}
+            <span class="me-3 text-success fs-5">Signed in as <strong>{{ user.username }}</strong></span>
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-lg">Logout</a>
+        {% else %}
+            <button class="btn btn-primary btn-lg me-3" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
+            <button class="btn btn-outline-primary btn-lg" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+        {% endif %}
     </div>
 
     <!-- Register Modal -->
