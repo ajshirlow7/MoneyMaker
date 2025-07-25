@@ -2,6 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.http import JsonResponse
+import json
+from django.views.decorators.http import require_POST
 
 from .forms import ReviewForm
 from .models import Review, GameState
@@ -53,8 +55,14 @@ def delete_review(request):
 
 
 @login_required
+@require_POST
 def earn_money(request):
     gamestate = GameState.objects.get(user=request.user)
-    gamestate.money += 10  # or whatever amount you want to add
+    data = json.loads(request.body)
+    amount = data.get('amount', 10)  # Default to 10 if not provided
+    gamestate.money += amount
     gamestate.save()
     return JsonResponse({'money': gamestate.money})
+
+
+

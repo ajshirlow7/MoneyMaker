@@ -30,7 +30,7 @@
     <div class="container mt-5">
         <h1 class="mb-4">Welcome, {{ user.username }}!</h1>
         <div class="money-display mb-4">
-            $<span id="money">0</span>
+            $<span id="money">{{ money }}</span>
         </div>
         <div class="row">
             <!-- Lemonade Stand -->
@@ -105,8 +105,18 @@
         let managerIntervals = {};
 
         function earnMoney(amount) {
-            money += amount * multiplier;
-            document.getElementById('money').textContent = money;
+            fetch("{% url 'earn_money' %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": getCookie("csrftoken"),
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ amount: amount })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("money").textContent = data.money;
+            });
         }
 
         function buyUpgrade() {
@@ -200,6 +210,21 @@
                     if (!managers[business]) btn.disabled = false;
                 }
             }, interval);
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
         }
     </script>
 </body>
