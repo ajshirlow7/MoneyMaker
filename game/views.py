@@ -42,8 +42,9 @@ def review_page(request):
 
 @login_required
 def leaderboard_view(request):
-    users = User.objects.all().order_by('username')
-    return render(request, "game/leaderboard.html", {"users": users})
+    # Get all GameStates, order by money descending
+    leaderboard = GameState.objects.select_related('user').order_by('-money')
+    return render(request, "game/leaderboard.html", {"leaderboard": leaderboard})
 
 
 @login_required

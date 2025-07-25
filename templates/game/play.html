@@ -140,10 +140,15 @@
                 money -= managerCosts[business];
                 document.getElementById('money').textContent = money;
                 managers[business] = true;
+                // Debug: show which elements are being updated
+                console.log(
+                  business,
+                  document.getElementById(business + 'ManagerBtn'),
+                  document.getElementById(business + 'ManagerStatus')
+                );
                 document.getElementById(business + 'ManagerBtn').textContent = "Manager Hired!";
                 document.getElementById(business + 'ManagerBtn').disabled = true;
                 document.getElementById(business + 'ManagerStatus').textContent = "Automated!";
-                console.log('Updating:', business + 'ManagerStatus', document.getElementById(business + 'ManagerStatus'));
                 autoRunBusiness(business);
             }
         }
