@@ -4,12 +4,92 @@
     <meta charset="UTF-8">
     <title>MoneyMaker - Play</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
+            min-height: 100vh;
+        }
+        .money-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #198754;
+        }
+        .business-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .business-btn {
+            min-width: 120px;
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-5">
-        <h1>Incremental Clicker Game</h1>
-        <p>Welcome, {{ user.username }}! (Game UI goes here.)</p>
-        <a href="{% url 'home' %}" class="btn btn-secondary mt-3">Back to Home</a>
+        <h1 class="mb-4">Welcome, {{ user.username }}!</h1>
+        <div class="money-display mb-4">
+            $<span id="money">0</span>
+        </div>
+        <div class="row">
+            <!-- Lemonade Stand -->
+            <div class="col-md-4">
+                <div class="business-card text-center">
+                    <h4>Lemonade Stand</h4>
+                    <p>Earns $1 per click</p>
+                    <button class="btn btn-success business-btn" onclick="earnMoney(1)">Click</button>
+                </div>
+            </div>
+            <!-- Car Wash -->
+            <div class="col-md-4">
+                <div class="business-card text-center">
+                    <h4>Car Wash</h4>
+                    <p>Earns $10 per click</p>
+                    <button class="btn btn-primary business-btn" onclick="earnMoney(10)">Click</button>
+                </div>
+            </div>
+            <!-- Pizza Shop -->
+            <div class="col-md-4">
+                <div class="business-card text-center">
+                    <h4>Pizza Shop</h4>
+                    <p>Earns $100 per click</p>
+                    <button class="btn btn-warning business-btn" onclick="earnMoney(100)">Click</button>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <!-- Upgrade Example -->
+            <div class="col-md-6 offset-md-3">
+                <div class="business-card text-center">
+                    <h5>Upgrade: Double Earnings</h5>
+                    <p>Cost: $500</p>
+                    <button class="btn btn-dark" id="upgradeBtn" onclick="buyUpgrade()">Buy Upgrade</button>
+                </div>
+            </div>
+        </div>
+        <a href="{% url 'home' %}" class="btn btn-secondary mt-5">Back to Home</a>
     </div>
+    <script>
+        let money = 0;
+        let multiplier = 1;
+        let upgradeBought = false;
+
+        function earnMoney(amount) {
+            money += amount * multiplier;
+            document.getElementById('money').textContent = money;
+        }
+
+        function buyUpgrade() {
+            if (!upgradeBought && money >= 500) {
+                money -= 500;
+                multiplier = 2;
+                upgradeBought = true;
+                document.getElementById('money').textContent = money;
+                document.getElementById('upgradeBtn').textContent = "Purchased!";
+                document.getElementById('upgradeBtn').disabled = true;
+            }
+        }
+    </script>
 </body>
 </html>
