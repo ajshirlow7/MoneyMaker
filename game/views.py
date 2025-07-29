@@ -56,7 +56,13 @@ def review_page(request):
 @login_required
 def leaderboard_view(request):
     users = User.objects.all().order_by('username')
-    return render(request, "game/leaderboard.html", {"users": users})
+    # Get each user's score from GameState
+    user_scores = []
+    for user in users:
+        gamestate = GameState.objects.filter(user=user).first()
+        score = gamestate.money if gamestate else 0
+        user_scores.append({'user': user, 'score': score})
+    return render(request, "game/leaderboard.html", {"user_scores": user_scores})
 
 
 @login_required
