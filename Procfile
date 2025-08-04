@@ -1,1 +1,1 @@
-web: gunicorn MoneyMaker.wsgi
+web: gunicorn config.wsgi
