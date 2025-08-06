@@ -10,4 +10,5 @@ urlpatterns = [
     path("play/", include("game.urls")),
     path("review/", views.review_view, name="review"),
     path("review/delete/", views.delete_review, name="delete_review"),
+    path("review/reply/delete/<int:reply_id>/", views.delete_reply, name="delete_reply"),
 ]

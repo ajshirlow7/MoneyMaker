@@ -87,13 +87,15 @@
 <div class="container mt-5 mb-5">
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
-            {% if user.is_authenticated and user_review %}
+            {% if user.is_authenticated and user_review and not is_edit %}
               <div class="alert alert-info text-center mb-4">
                 You have already submitted a review.
               </div>
             {% else %}
               <div class="card p-4 mb-4 shadow-sm">
-                  <h2 class="mb-3 text-center">Leave a Review</h2>
+                  <h2 class="mb-3 text-center">
+                    {% if is_edit %}Edit Your Review{% else %}Leave a Review{% endif %}
+                  </h2>
                   <form method="post">
                       {% csrf_token %}
                       <div class="mb-3 text-center">
@@ -119,10 +121,10 @@
                       </div>
                       <div class="d-flex justify-content-between align-items-center mt-3 review-actions">
                           <button type="submit" class="btn btn-success px-4">
-                              {% if user_review %}Update Review{% else %}Post Review{% endif %}
+                              {% if is_edit %}Update Review{% else %}Post Review{% endif %}
                           </button>
-                          {% if user_review %}
-                              <a href="{% url 'delete_review' %}" class="btn btn-outline-danger ms-2">Delete Review</a>
+                          {% if is_edit %}
+                              <a href="{% url 'review' %}" class="btn btn-outline-secondary ms-2">Cancel</a>
                           {% endif %}
                       </div>
                   </form>
@@ -242,6 +244,36 @@
   </div>
 </div>
 
+<!-- Review Edited Modal -->
+<div class="modal fade" id="reviewEditedModal" tabindex="-1" aria-labelledby="reviewEditedModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reviewEditedModalLabel">Edited</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        Your review has been edited.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reply Deleted Modal -->
+<div class="modal fade" id="replyDeletedModal" tabindex="-1" aria-labelledby="replyDeletedModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="replyDeletedModalLabel">Reply Deleted</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        Your reply has been deleted.
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   {% if show_review_posted_modal %}
@@ -251,6 +283,14 @@ document.addEventListener('DOMContentLoaded', function() {
   {% if show_review_deleted_modal %}
     var deletedModal = new bootstrap.Modal(document.getElementById('reviewDeletedModal'));
     deletedModal.show();
+  {% endif %}
+  {% if show_review_edited_modal %}
+    var editedModal = new bootstrap.Modal(document.getElementById('reviewEditedModal'));
+    editedModal.show();
+  {% endif %}
+  {% if show_reply_deleted_modal %}
+    var replyDeletedModal = new bootstrap.Modal(document.getElementById('replyDeletedModal'));
+    replyDeletedModal.show();
   {% endif %}
 });
 </script>

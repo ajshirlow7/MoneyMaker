@@ -45,28 +45,59 @@ def logout_view(request):
 def review_view(request):
     user_review = None
     if request.user.is_authenticated:
-        user_review = Review.objects.filter(user=request.user).first()
-    all_reviews = Review.objects.all().order_by('-id')
+        user_review = Review.objects.filter(user=request.user, parent__isnull=True).first()
+    all_reviews = Review.objects.filter(parent__isnull=True).order_by('-id').prefetch_related('replies')
     show_review_posted_modal = False
     show_review_deleted_modal = False
+    show_review_edited_modal = False
+    show_reply_deleted_modal = False
 
-    if request.method == "POST" and not user_review:
+    is_edit = request.GET.get('edit') == '1' and user_review
+
+    if request.method == "POST":
+        # Handle replies
         if request.POST.get('parent_id'):
-            form = ReviewForm()
-        else:
+            parent_id = request.POST.get('parent_id')
+            parent_review = Review.objects.filter(id=parent_id, parent__isnull=True).first()
+            if parent_review and request.user.is_authenticated:
+                text = request.POST.get('text', '').strip()
+                if text:
+                    Review.objects.create(
+                        user=request.user,
+                        text=text,
+                        parent=parent_review
+                    )
+                return redirect('review')
+        # Editing existing review
+        elif is_edit and user_review:
+            form = ReviewForm(request.POST, instance=user_review)
+            if form.is_valid():
+                form.save()
+                return redirect(f"{reverse('review')}?edited=1")
+        # New review
+        elif not user_review:
             form = ReviewForm(request.POST)
             if form.is_valid():
                 review = form.save(commit=False)
                 review.user = request.user
                 review.save()
                 return redirect(f"{reverse('review')}?posted=1")
+        else:
+            form = ReviewForm(instance=user_review)
     else:
-        form = ReviewForm()
+        if is_edit and user_review:
+            form = ReviewForm(instance=user_review)
+        else:
+            form = ReviewForm()
 
     if request.GET.get('posted') == '1':
         show_review_posted_modal = True
     if request.GET.get('deleted') == '1':
         show_review_deleted_modal = True
+    if request.GET.get('edited') == '1':
+        show_review_edited_modal = True
+    if request.GET.get('reply_deleted') == '1':
+        show_reply_deleted_modal = True
 
     return render(request, "game/review.html", {
         "form": form,
@@ -74,6 +105,9 @@ def review_view(request):
         "all_reviews": all_reviews,
         "show_review_posted_modal": show_review_posted_modal,
         "show_review_deleted_modal": show_review_deleted_modal,
+        "show_review_edited_modal": show_review_edited_modal,
+        "show_reply_deleted_modal": show_reply_deleted_modal,
+        "is_edit": is_edit,
     })
 
 
@@ -84,6 +118,16 @@ def delete_review(request):
         if review:
             review.delete()
             return redirect(f"{reverse('review')}?deleted=1")
+    return redirect('review')
+
+
+@login_required
+def delete_reply(request, reply_id):
+    if request.method == "POST":
+        reply = Review.objects.filter(id=reply_id, parent__isnull=False, user=request.user).first()
+        if reply:
+            reply.delete()
+            return redirect(f"{reverse('review')}?reply_deleted=1")
     return redirect('review')
 
 
