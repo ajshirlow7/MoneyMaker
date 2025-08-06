@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from .forms import ReviewForm
 from .models import Review  # Make sure to import the Review model
@@ -10,7 +10,22 @@ from django.contrib.auth.decorators import login_required
 
 def home_page_view(request):
     form = UserCreationForm()
-    login_form = AuthenticationForm()
+    login_form = AuthenticationForm(request, data=request.POST if request.method == "POST" and "login" in request.POST else None)
+
+    # Handle login POST
+    if request.method == "POST" and "login" in request.POST:
+        if login_form.is_valid():
+            user = authenticate(
+                request,
+                username=login_form.cleaned_data.get("username"),
+                password=login_form.cleaned_data.get("password"),
+            )
+            if user is not None:
+                login(request, user)
+                messages.success(request, f'You have logged in as "{user.username}"')
+                return redirect("home")
+        # If invalid, fall through and render homepage with errors
+
     return render(
         request,
         "homepage.html",

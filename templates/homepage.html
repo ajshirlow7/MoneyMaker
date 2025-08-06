@@ -140,16 +140,17 @@
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
-          <form method="POST" action="{% url 'login' %}">
+          <form method="POST" action="{% url 'home' %}">
             <div class="modal-header">
               <h5 class="modal-title" id="loginModalLabel">Login</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               {% csrf_token %}
+              <input type="hidden" name="login" value="1">
               {% if login_form and login_form.errors %}
                 <div class="alert alert-danger">
-                  {{ login_form.errors }}
+                  Incorrect username or password.
                 </div>
               {% endif %}
               <div class="mb-3">
@@ -263,6 +264,11 @@
                 modal.show();
             });
         });
+
+        {% if login_form and login_form.errors %}
+          var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+          loginModal.show();
+        {% endif %}
     });
     </script>
 </body>
