@@ -10,33 +10,119 @@
         body {
             background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
             min-height: 100vh;
+            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
         }
         .navbar-brand {
             font-weight: bold;
             letter-spacing: 2px;
+            color: #2563eb !important;
+        }
+        .navbar {
+            border-bottom: 1px solid #e2e8f0;
+            background: #fff;
+        }
+        .nav-link {
+            color: #374151 !important;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #2563eb !important;
+        }
+        .welcome-section {
+            margin-top: 100px;
+            text-align: center;
+            padding: 40px 0 20px 0;
+            background: rgba(255,255,255,0.8);
+            border-radius: 18px;
+            box-shadow: 0 4px 24px 0 rgba(37,99,235,0.08);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .welcome-section h1 {
+            font-size: 2.7rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5em;
+        }
+        .welcome-section p {
+            color: #475569;
+            font-size: 1.25rem;
+            margin-bottom: 0;
+        }
+        .d-flex.flex-column.align-items-center.mt-4 {
+            margin-top: 2.5rem !important;
+        }
+        .btn-primary, .btn-outline-primary {
+            font-size: 1.1rem;
+            border-radius: 8px;
+            padding: 0.6em 2em;
+        }
+        .btn-outline-danger {
+            border-radius: 8px;
+        }
+        .modal-content {
+            border-radius: 16px;
+            box-shadow: 0 6px 32px 0 rgba(37,99,235,0.12);
         }
         .modal-header {
             border-bottom: none;
+            background: #f1f5f9;
+            border-radius: 16px 16px 0 0;
         }
         .modal-footer {
             border-top: none;
+            background: #f8fafc;
+            border-radius: 0 0 16px 16px;
         }
-        .welcome-section {
-            margin-top: 80px;
+        .alert {
+            border-radius: 8px;
+            font-size: 1.05rem;
+        }
+        .form-label {
+            font-weight: 500;
+            color: #2563eb;
+        }
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            font-size: 1.05rem;
+        }
+        .form-control:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 0.2rem rgba(37,99,235,0.08);
+        }
+        .modal-title {
+            color: #2563eb;
+            font-weight: 600;
+        }
+        .btn-close {
+            filter: invert(40%);
+        }
+        @media (max-width: 600px) {
+            .welcome-section {
+                margin-top: 70px;
+                padding: 20px 5px 10px 5px;
+            }
+            .welcome-section h1 {
+                font-size: 2rem;
+            }
+        }
+        .banner-image-wrapper {
             text-align: center;
+            margin: 20px 0;
         }
-        .welcome-section h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            color: #2d3748;
-        }
-        .welcome-section p {
-            color: #4a5568;
-            font-size: 1.25rem;
+        .banner-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body>
+    {% load static %}
     {% if messages %}
       <div class="container mt-4">
         {% for message in messages %}
@@ -78,6 +164,7 @@
             </div>
         </div>
     </nav>
+
 
     <!-- Main Content -->
     <div class="welcome-section">
