@@ -14,7 +14,18 @@ MoneyMaker is a Django-based incremental clicker game where users can earn virtu
 - **Authentication:** Register and log in to save your progress.
 - **Responsive UI:** Clean, modern interface built with Bootstrap.
 
-## Project Structure
+### CRUD Functionality
+
+MoneyMaker implements full CRUD (Create, Read, Update, Delete) functionality for user-generated content, specifically in the review system:
+
+- **Create:** Authenticated users can create new reviews for the game, sharing their feedback and experiences.
+- **Read:** All users can view existing reviews and replies, allowing for community engagement and transparency.
+- **Update:** Users can edit their own reviews to correct or update their feedback.
+- **Delete:** Users have the ability to delete their own reviews if they wish to remove their comments.
+
+This CRUD system ensures that users have control over their contributions and can interact meaningfully with the MoneyMaker community.
+
+#### Project Structure
 
 - `manage.py` - Django management script
 - `config/` - Django project configuration (settings, URLs, etc.)
@@ -23,57 +34,21 @@ MoneyMaker is a Django-based incremental clicker game where users can earn virtu
 - `templates/` - HTML templates for the game and site
 - `static/` and `staticfiles/` - Static assets (CSS, JS, images)
 
-## Getting Started
+ ##### Technology Stack
 
-### Prerequisites
+- **Backend Framework:** Django (Python)
+- **Frontend:** HTML5, CSS3, JavaScript, Bootstrap
+- **Database:** SQLite (default, can be switched to PostgreSQL or MySQL)
+- **Authentication:** Django built-in authentication system
+- **Deployment:** Heroku (for live demo)
+- **Version Control:** Git
+- **Other Tools:** Django Admin, pip (Python package manager)
 
-- Python 3.8+
-- Django 4.x
-- pip
+######  Performance & Accessibility
 
-### Installation
 
-1. **Clone the repository:**
-    ```sh
-    git clone <repository-url>
-    cd MoneyMaker
-    ```
 
-2. **Install dependencies:**
-    ```sh
-    pip install -r requirements.txt
-    ```
 
-3. **Apply migrations:**
-    ```sh
-    python manage.py migrate
-    ```
 
-4. **Create a superuser (optional):**
-    ```sh
-    python manage.py createsuperuser
-    ```
 
-5. **Run the development server:**
-    ```sh
-    python manage.py runserver
-    ```
 
-6. **Open your browser and go to:**  
-    `http://127.0.0.1:8000/`
-
-## How to Play
-
-- Register or log in.
-- Click "Start" on businesses to earn money.
-- Buy upgrades and hire managers to automate earnings.
-- Check the leaderboard to see your ranking.
-- Leave a review or reply to others' reviews.
-
-## License
-
-This project is for educational purposes.
-
----
-
-*Made with
