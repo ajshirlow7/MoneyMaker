@@ -45,7 +45,7 @@ This CRUD system ensures that users have control over their contributions and ca
 - **Other Tools:** Django Admin, pip (Python package manager)
 
 ######  Performance & Accessibility
-
+![Lighthouse Performance Results](/images/moneymaker_lighthouse.png)
 
 
 
