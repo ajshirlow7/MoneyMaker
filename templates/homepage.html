@@ -269,6 +269,11 @@
           var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
           loginModal.show();
         {% endif %}
+
+        {% if form and form.errors %}
+          var registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
+          registerModal.show();
+        {% endif %}
     });
     </script>
 </body>
