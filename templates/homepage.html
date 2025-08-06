@@ -37,17 +37,16 @@
     </style>
 </head>
 <body>
-   {% if messages %}
-        <div class="container mt-3">
-            {% for message in messages %}
-                <div class="alert alert-info alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
-        </div>
+    {% if messages %}
+      <div class="container mt-4">
+        {% for message in messages %}
+          <div class="alert alert-info text-center" role="alert">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
     {% endif %}
-    <!-- rest of your homepage content... -->
+
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
         <div class="container">
@@ -68,7 +67,6 @@
                         <a class="nav-link" href="{% url 'review' %}">Leave a Review</a>
                     </li>
                 </ul>
-                
             </div>
         </div>
     </nav>
@@ -83,7 +81,7 @@
     <div class="d-flex flex-column align-items-center mt-4">
         {% if user.is_authenticated %}
             <span class="mb-3 text-success fs-5">Signed in as <strong>{{ user.username }}</strong></span>
-            <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-lg mb-3">Logout</a>
+            <a href="#" class="btn btn-outline-danger btn-lg mb-3" id="logout-link" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a>
             <a href="{% url 'play' %}" class="btn btn-success btn-lg">Play</a>
         {% else %}
             <div>
@@ -163,16 +161,68 @@
       </div>
     </div>
 
- 
+    <!-- Logout Confirmation Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to log out?
+          </div>
+          <div class="modal-footer">
+            <form id="logoutForm" method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">Yes, log me out</button>
+            </form>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logged Out Success Modal -->
+    <div class="modal fade" id="loggedOutModal" tabindex="-1" aria-labelledby="loggedOutModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="loggedOutModalLabel">Logged Out</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            You have successfully logged out.
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Bootstrap 5 JS (with Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Auto-open modal if there are form errors -->
     <script>
-      {% if form.errors %}
-        var registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
-        registerModal.show();
-      {% endif %}
+    document.getElementById('logout-link').addEventListener('click', function(event) {
+        event.preventDefault();
+        var logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'));
+        logoutModal.show();
+    });
+
+    // Intercept logout form submit
+    document.getElementById('logoutForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var logoutModalEl = document.getElementById('logoutModal');
+        var logoutModal = bootstrap.Modal.getInstance(logoutModalEl);
+        logoutModal.hide();
+
+        // Show success modal
+        var loggedOutModal = new bootstrap.Modal(document.getElementById('loggedOutModal'));
+        loggedOutModal.show();
+
+        // After 5 seconds, submit the form
+        setTimeout(function() {
+            event.target.submit();
+        }, 2500); // 2500ms = 2.5 seconds
+    });
     </script>
 </body>
 </html>

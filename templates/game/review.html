@@ -75,44 +75,59 @@
     </style>
 </head>
 <body>
+{% if messages %}
+  <div class="container mt-4">
+    {% for message in messages %}
+      <div class="alert alert-success text-center" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
 <div class="container mt-5 mb-5">
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
-            <div class="card p-4 mb-4 shadow-sm">
-                <h2 class="mb-3 text-center">Leave a Review</h2>
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="mb-3 text-center">
-                        <label class="form-label d-block mb-2">Your Rating:</label>
-                        <div class="star-rating">
-                            {% for i in "54321" %}
-                                <input type="radio" name="rating" id="star{{ i }}" value="{{ i }}"
-                                    {% if forloop.last %}required{% endif %}
-                                    {% if form.rating.value|stringformat:"s" == i %}checked{% endif %}>
-                                <label for="star{{ i }}">&#9733;</label>
-                            {% endfor %}
-                        </div>
-                        {% if form.rating.errors %}
-                            <div class="text-danger small">{{ form.rating.errors.0 }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Your Review:</label>
-                        {{ form.text }}
-                        {% if form.text.errors %}
-                            <div class="text-danger small">{{ form.text.errors.0 }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center mt-3 review-actions">
-                        <button type="submit" class="btn btn-success px-4">
-                            {% if user_review %}Update Review{% else %}Post Review{% endif %}
-                        </button>
-                        {% if user_review %}
-                            <a href="{% url 'delete_review' %}" class="btn btn-outline-danger ms-2">Delete Review</a>
-                        {% endif %}
-                    </div>
-                </form>
-            </div>
+            {% if user.is_authenticated and user_review %}
+              <div class="alert alert-info text-center mb-4">
+                You have already submitted a review.
+              </div>
+            {% else %}
+              <div class="card p-4 mb-4 shadow-sm">
+                  <h2 class="mb-3 text-center">Leave a Review</h2>
+                  <form method="post">
+                      {% csrf_token %}
+                      <div class="mb-3 text-center">
+                          <label class="form-label d-block mb-2">Your Rating:</label>
+                          <div class="star-rating">
+                              {% for i in "54321" %}
+                                  <input type="radio" name="rating" id="star{{ i }}" value="{{ i }}"
+                                      {% if forloop.last %}required{% endif %}
+                                      {% if form.rating.value|stringformat:"s" == i %}checked{% endif %}>
+                                  <label for="star{{ i }}">&#9733;</label>
+                              {% endfor %}
+                          </div>
+                          {% if form.rating.errors %}
+                              <div class="text-danger small">{{ form.rating.errors.0 }}</div>
+                          {% endif %}
+                      </div>
+                      <div class="mb-3">
+                          <label class="form-label">Your Review:</label>
+                          {{ form.text }}
+                          {% if form.text.errors %}
+                              <div class="text-danger small">{{ form.text.errors.0 }}</div>
+                          {% endif %}
+                      </div>
+                      <div class="d-flex justify-content-between align-items-center mt-3 review-actions">
+                          <button type="submit" class="btn btn-success px-4">
+                              {% if user_review %}Update Review{% else %}Post Review{% endif %}
+                          </button>
+                          {% if user_review %}
+                              <a href="{% url 'delete_review' %}" class="btn btn-outline-danger ms-2">Delete Review</a>
+                          {% endif %}
+                      </div>
+                  </form>
+              </div>
+            {% endif %}
             <h3 class="mb-3">All Reviews</h3>
             {% for review in all_reviews %}
                 <div class="card review-card p-3 mb-2">
@@ -196,5 +211,49 @@
         });
     });
 </script>
+
+<!-- Review Posted Modal -->
+<div class="modal fade" id="reviewPostedModal" tabindex="-1" aria-labelledby="reviewPostedModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reviewPostedModalLabel">Success</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        Your review has been posted.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Review Deleted Modal -->
+<div class="modal fade" id="reviewDeletedModal" tabindex="-1" aria-labelledby="reviewDeletedModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reviewDeletedModalLabel">Deleted</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        Your review has been deleted.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  {% if show_review_posted_modal %}
+    var postedModal = new bootstrap.Modal(document.getElementById('reviewPostedModal'));
+    postedModal.show();
+  {% endif %}
+  {% if show_review_deleted_modal %}
+    var deletedModal = new bootstrap.Modal(document.getElementById('reviewDeletedModal'));
+    deletedModal.show();
+  {% endif %}
+});
+</script>
+
 </body>
 </html>
