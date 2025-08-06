@@ -1,54 +1,124 @@
 # MoneyMaker - Incremental Clicker Game
 
-MoneyMaker is a Django-based incremental clicker game where users can earn virtual money by running businesses, purchase upgrades, hire managers for automation, and compete on the leaderboard. Users can also leave reviews and reply to others.
+## Table of Contents
 
-🌐 Live Demo
-[Try MoneyMaker now!](https://moneymaker-82ffd9f04b3c.herokuapp.com/)
+- [Introduction](#introduction)
+- [Project Outline](#project-outline)
+- [Key Objectives](#key-objectives)
+- [UX Design](#ux-design)
+- [User Stories](#user-stories)
+- [Color Design](#color-design)
+- [Wireframes](#wireframes)
+- [Imagery](#imagery)
+- [Features](#features)
+  - [General Features](#general-features)
+  - [Agile Section](#agile-section)
+  - [Responsive Design](#responsive-design)
+  - [AI Implementation](#ai-implementation)
+- [Testing](#testing)
+- [Optimization](#optimization)
+- [Database](#database)
+- [Deployment](#deployment)
+- [Credit](#credit)
+
+---
+
+## Introduction
+
+MoneyMaker is a Django-based incremental clicker game where users run virtual businesses, earn money, purchase upgrades, hire managers for automation, and compete on a leaderboard. The project emphasizes accessibility, responsive design, and community engagement through reviews.
+
+## Project Outline
+
+This project simulates a business management experience in a fun, gamified way. Players start with a basic business and expand their empire by reinvesting earnings, unlocking new businesses, and automating processes.
+
+## Key Objectives
+
+- Provide an engaging incremental game experience.
+- Allow users to register, save progress, and compete.
+- Enable community interaction through reviews and replies.
+- Ensure accessibility and responsiveness across devices.
+
+## UX Design
+
+- **Navigation:** Simple, intuitive navigation with clear calls to action.
+- **Feedback:** Real-time updates on earnings and upgrades.
+- **Accessibility:** Keyboard navigation, screen reader support, and high-contrast UI.
+
+## User Stories
+
+- As a user, I want to register and log in so my progress is saved.
+- As a player, I want to earn money by clicking and automate businesses.
+- As a competitor, I want to see my ranking on the leaderboard.
+- As a community member, I want to leave and read reviews.
+
+## Color Design
+
+- Uses a high-contrast palette for readability and accessibility.
+- Consistent color themes for business types and UI elements.
+
+## Wireframes
+
+- Wireframes were created for desktop and mobile layouts, focusing on clear business panels, upgrade buttons, and review sections.
+
+## Imagery
+
+- Uses simple, friendly icons for businesses and upgrades.
+- All images include descriptive alt text for accessibility.
 
 ## Features
 
-- **Incremental Gameplay:** Run businesses like Lemonade Stand, Car Wash, and Pizza Shop to earn money.
-- **Upgrades & Managers:** Buy upgrades to increase earnings and hire managers to automate businesses.
-- **Leaderboard:** Compete with other users for the highest earnings.
-- **User Reviews:** Leave reviews and replies for the game.
-- **Authentication:** Register and log in to save your progress.
-- **Responsive UI:** Clean, modern interface built with Bootstrap.
+### General Features
 
-### CRUD Functionality
+- Incremental gameplay with multiple business types.
+- Upgrades and managers for automation.
+- Leaderboard for competition.
+- Review and reply system.
+- Authentication and user profiles.
 
-MoneyMaker implements full CRUD (Create, Read, Update, Delete) functionality for user-generated content, specifically in the review system:
+### Agile Section
 
-- **Create:** Authenticated users can create new reviews for the game, sharing their feedback and experiences.
-- **Read:** All users can view existing reviews and replies, allowing for community engagement and transparency.
-- **Update:** Users can edit their own reviews to correct or update their feedback.
-- **Delete:** Users have the ability to delete their own reviews if they wish to remove their comments.
+- Features were developed iteratively with regular feedback and testing.
+- User stories and tasks tracked using a project board.
 
-This CRUD system ensures that users have control over their contributions and can interact meaningfully with the MoneyMaker community.
+### Responsive Design
 
-#### Project Structure
+- Fully responsive layout using Bootstrap.
+- Optimized for desktop, tablet, and mobile devices.
 
-- `manage.py` - Django management script
-- `config/` - Django project configuration (settings, URLs, etc.)
-- `game/` - Main app with game logic, models, views, and forms
-- `MoneyMaker/` - Additional app (e.g., reviews, admin, images)
-- `templates/` - HTML templates for the game and site
-- `static/` and `staticfiles/` - Static assets (CSS, JS, images)
+### AI Implementation
 
- ##### Technology Stack
+- AI-driven suggestions for upgrades and business strategies (if applicable).
+- Smart review moderation (if implemented).
 
-- **Backend Framework:** Django (Python)
-- **Frontend:** HTML5, CSS3, JavaScript, Bootstrap
-- **Database:** SQLite (default, can be switched to PostgreSQL or MySQL)
-- **Authentication:** Django built-in authentication system
-- **Deployment:** Heroku (for live demo)
-- **Version Control:** Git
-- **Other Tools:** Django Admin, pip (Python package manager)
+## Testing
 
-######  Performance & Accessibility
-![Lighthouse Performance Results](/images/moneymaker_lighthouse.png)
+- Manual and automated testing for all major features.
+- Accessibility tested with keyboard and screen readers.
+- Lighthouse audits for performance and best practices.
 
+## Optimization
 
+- Optimized images and static files for fast loading.
+- Database queries optimized for leaderboard and reviews.
 
+## Database
 
+- Django ORM with SQLite (default), easily switchable to PostgreSQL or MySQL.
+- Models for users, businesses, upgrades, reviews, and leaderboard entries.
 
+## Deployment
 
+- Deployed on Heroku for live demo.
+- Static files managed with WhiteNoise.
+- Continuous deployment via Git.
+
+## Credit
+
+- Developed by [Your Name/Team].
+- Built with Django, Bootstrap, and open-source libraries.
+- Icons and images from [sources, e.g., FontAwesome, Unsplash].
+- Special thanks to the Django and open-source community.
+
+---
+
+*Made with Django and Bootstrap. For educational purposes only.*
