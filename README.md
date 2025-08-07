@@ -46,10 +46,18 @@ This project simulates a business management experience in a fun, gamified way. 
 
 ## User Stories
 
-- As a user, I want to register and log in so my progress is saved.
-- As a player, I want to earn money by clicking and automate businesses.
-- As a competitor, I want to see my ranking on the leaderboard.
-- As a community member, I want to leave and read reviews.
+- As a new user, I want to easily register an account so I can save my progress and access the game from any device.
+- As a returning user, I want to log in securely so I can continue building my business empire.
+- As a player, I want to click on businesses to earn money so I can progress in the game.
+- As a player, I want to purchase upgrades for my businesses so I can increase my earnings.
+- As a player, I want to hire managers to automate my businesses so I can earn money even when not actively clicking.
+- As a player, I want to unlock new types of businesses as I progress so the game remains engaging and rewarding.
+- As a competitor, I want to view a leaderboard so I can compare my progress with other players and strive for a higher rank.
+- As a community member, I want to leave reviews about the game so I can share my feedback and experiences.
+- As a user, I want to read reviews and replies from other players so I can learn tips and feel part of the community.
+- As a review author, I want to edit or delete my own reviews so I can manage my contributions.
+- As a user with accessibility needs**, I want to navigate the site using only my keyboard and screen reader so I can play the game without barriers.
+- As a mobile user, I want the game interface to adapt to my device so I can play comfortably on any screen size.
 
 ## Color Design
 
@@ -77,8 +85,12 @@ This project simulates a business management experience in a fun, gamified way. 
 
 ### Agile Section
 
-- Features were developed iteratively with regular feedback and testing.
-- User stories and tasks tracked using a project board.
+Throughout this project, I adopted an agile workflow and methodology. Due to time constraints, I continuously iterated and performed bug testing, focusing on refining the core features before expanding the project scope. For example, in this final version, authors can self-publish, while some features like the reading function were deprioritized. My main priority was to perfect the essential functionalities before moving on to additional features.
+
+At the outset, I established a project board to track user stories and monitor progress using 'To Do', 'In Progress', and 'Done' columns. Each user story was assigned a 'MOSCOW' prioritization tag (Must have, Should have, Could have, Won't have), following the Kanban method for effective workflow management.
+
+The evolution of the project can be seen by comparing the original wireframes with the current deployed website. Here is my project board:
+<a href="https://github.com/users/ajshirlow7/projects/1" target="_blank" rel="noopener noreferrer">| MoneyMaker project board |</a>
 
 ### Responsive Design
 
@@ -96,6 +108,50 @@ This project simulates a business management experience in a fun, gamified way. 
 - Accessibility tested with keyboard and screen readers.
 - Lighthouse audits for performance and best practices.
 
+Lighthouse scores:
+
+
+![Lighthouse](images/lighthouse.png)
+
+Nu Html Checker:
+
+Homepage:
+![htmlchecker](images/html.png)
+
+Review Page:
+![htmlchecker](images/review.png)
+
+Leadboard Page:
+![htmlchecker](images/leaderboard.png)
+
+Play Page:
+![htmlchecker](images/playpage.png)
+
+
+CSS Validation:
+![csschecker](images/css.png)
+
+Javascript checker for the play page which uses javascript heavily for game functionality:
+
+Play page:
+![javachecker](images/javascript.png)
+
+Python Validation:
+
+Homepage:
+![pythonchecker](images/pythonhome.png)
+
+Leaderboard:
+![pythonchecker](images/pythonleaderboard.png)
+
+Review:
+![pythonchecker](images/pythonreview.png)
+
+Game:
+![pythonchecker](images/pythongame.png)
+
+
+
 ## Optimization
 
 - Optimized images and static files for fast loading.
@@ -103,8 +159,17 @@ This project simulates a business management experience in a fun, gamified way. 
 
 ## Database
 
-- Django ORM with SQLite (default), easily switchable to PostgreSQL or MySQL.
-- Models for users, businesses, upgrades, reviews, and leaderboard entries.
+- I used Code Institute's PostgreSQL database.
+- Creating a database:
+
+To create a database with Code Institute's PostgreSQL service:
+
+1. Navigate to PostgreSQL from Code Institute.
+2. Enter your student email address in the input field provided.
+3. Click **Submit**.
+4. Wait while the database is created.
+5. Check your email for a confirmation message.
+6. You will receive a URL that you can use to connect your app to your database.
 
 ## Deployment
 
