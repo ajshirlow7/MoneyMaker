@@ -202,6 +202,29 @@ To create a database with Code Institute's PostgreSQL service:
 
 ## Deployment
 
+## Git Commands: Add, Commit, and Push to GitHub
+
+1. **Stage your changes**  
+   This command adds all changed files to the staging area:
+   ```
+   git add .
+   ```
+   Or, to add a specific file:
+   ```
+   git add path/to/your/file
+   ```
+
+2. **Commit your changes**  
+   This command commits the staged changes with a message describing what you changed:
+   ```
+   git commit -m "Your commit message here"
+   ```
+
+3. **Push your changes to GitHub**  
+   This command pushes your commits to the main branch on GitHub:
+   ```
+   git push origin main
+
 - Deployed on Heroku for live demo.
 
 Heroku
@@ -253,7 +276,20 @@ Go back to Heroku, click on the 'Deploy' tab.
 
 Connect your project to GitHub.
 
-Scroll to the bottom and click 'Deploy Branch' and your project will be deployed!
+Scroll to the bottom and click 'Deploy Branch'.
+
+
+
+
+
+# Edit local_settings.py with your PostgreSQL credentials
+Run migrations:
+python manage.py migrate
+Create superuser (optional):
+python manage.py createsuperuser
+Run development server:
+python manage.py runserver
+
 
 ## Credit
 
