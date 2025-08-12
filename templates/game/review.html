@@ -115,6 +115,9 @@
                       <div class="mb-3">
                           <label class="form-label">Your Review:</label>
                           {{ form.text }}
+                          <div class="form-text text-muted" id="charCount" style="font-size: 0.95rem;">
+                              Max 500 characters remaining
+                          </div>
                           {% if form.text.errors %}
                               <div class="text-danger small">{{ form.text.errors.0 }}</div>
                           {% endif %}
@@ -211,6 +214,27 @@
                 if(checked) arr[idx].nextElementSibling.style.color = '#ffc107';
             });
         });
+    });
+
+    // Character counter for review textarea
+    document.addEventListener('DOMContentLoaded', function() {
+        var textarea = document.querySelector('textarea[name="text"]');
+        var charCount = document.getElementById('charCount');
+        var maxChars = 500;
+        if (textarea && charCount) {
+            textarea.setAttribute('maxlength', maxChars);
+            function updateCharCount() {
+                var remaining = maxChars - textarea.value.length;
+                charCount.textContent = 'Max ' + maxChars + ' characters        Remaining: ' + remaining;
+                if (remaining < 0) {
+                    charCount.classList.add('text-danger');
+                } else {
+                    charCount.classList.remove('text-danger');
+                }
+            }
+            textarea.addEventListener('input', updateCharCount);
+            updateCharCount();
+        }
     });
 </script>
 

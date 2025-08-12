@@ -40,11 +40,7 @@ This project simulates a business management experience in a fun, gamified way. 
 
 ## UX Design
 
-- **Navigation:** Simple, intuitive navigation with clear calls to action.
-- **Feedback:** Real-time updates on earnings and upgrades.
-- **Accessibility:** Keyboard navigation, screen reader support, and high-contrast UI.
-
-## User Stories
+### User Stories
 
 - As a new user, I want to easily register an account so I can save my progress and access the game from any device.
 - As a returning user, I want to log in securely so I can continue building my business empire.
@@ -61,12 +57,23 @@ This project simulates a business management experience in a fun, gamified way. 
 
 ## Color Design
 
-- Uses a high-contrast palette for readability and accessibility.
-- Consistent color themes for business types and UI elements.
+- The color scheme of the project is intentionally simple and efficient, focusing on clarity and usability. By using a minimal palette, the design maintains a clean and modern aesthetic that avoids visual clutter. This approach enhances readability and ensures that key elements stand out, supporting both user experience and accessibility. The streamlined color choices also contribute to faster development and easier maintenance.
 
 ## Wireframes
 
 - Wireframes were created for desktop and mobile layouts, focusing on clear business panels, upgrade buttons, and review sections.
+
+Homepage:
+![homepage](images/homewire.png)
+
+Leaderboard:
+![leaderboard](images/leaderwire.png)
+
+Review:
+![review](images/reviewwire.png)
+
+Play page:
+![playpage](images/playwire.png)
 
 ## Imagery
 
@@ -92,15 +99,38 @@ At the outset, I established a project board to track user stories and monitor p
 The evolution of the project can be seen by comparing the original wireframes with the current deployed website. Here is my project board:
 <a href="https://github.com/users/ajshirlow7/projects/1" target="_blank" rel="noopener noreferrer">| MoneyMaker project board |</a>
 
+Homepage:
+![homepage](images/homepage.png)
+
+Leaderboard page:
+![leaderboard](images/leaderboardpreview.png)
+
+HReview page:
+![review](images/reviewpage.png)
+
+Play page:
+![playpage](images/playpagepreview.png)
+
+
+
+
 ### Responsive Design
 
-- Fully responsive layout using Bootstrap.
-- Optimized for desktop, tablet, and mobile devices.
+- To enhance development efficiency, particularly in handling responsiveness, I chose to implement the Bootstrap framework. After some trial and error, I successfully built a fully responsive page that aligns with modern design standards. Instead of relying on Bootstrap’s built-in carousels, which introduced unexpected technical issues that conflicted with my original wireframes, I opted to develop a custom JavaScript solution for the shelving functionality. This approach allowed me to maintain both visual consistency and full control over responsiveness, particularly through tailored media queries.
 
 ### AI Implementation
 
-- AI-driven suggestions for upgrades and business strategies (if applicable).
-- Smart review moderation (if implemented).
+- Code Development
+Throughout the project, I utilized AI tools such as Copilot, Claude, and ChatGPT to streamline the development process. These tools allowed me to quickly generate Bootstrap components without needing to manually search the official documentation, significantly speeding up development in a time-constrained environment. I also relied on AI to help write, refine, and troubleshoot code when I encountered roadblocks, allowing me to maintain momentum and stay on schedule.
+
+- Debugging
+AI tools played a key role in identifying and resolving bugs or adjusting my code to better align with the project's design goals. What could have taken hours of manual debugging and research was often resolved in minutes using Copilot, Claude, or ChatGPT. This approach saved valuable time and improved the overall quality of the code.
+
+- Workflow Optimization
+AI proved especially useful for handling repetitive or routine coding tasks, giving me more time and focus for complex or creative aspects of the build. This also applied to tasks involving Bootstrap integration, where AI helped reduce setup time significantly.
+
+- Practical Use
+To optimize my workflow, I often selected specific portions of my code and provided detailed prompts to Claude or Copilot for targeted debugging, optimization, or refactoring. When generating new code, I broke down the required functionality into concise bullet points, which helped ensure that the AI-generated output closely matched the intended outcome. Afterward, I refined the code manually to align it even more closely with project requirements. For debugging, especially with CSS media queries, I found it effective to isolate the problematic sections and ask AI to analyze and fix them. This targeted method helped me resolve layout issues more efficiently and improve responsiveness across devices.
 
 ## Testing
 
@@ -160,7 +190,6 @@ Game:
 ## Database
 
 - I used Code Institute's PostgreSQL database.
-- Creating a database:
 
 To create a database with Code Institute's PostgreSQL service:
 
@@ -174,16 +203,60 @@ To create a database with Code Institute's PostgreSQL service:
 ## Deployment
 
 - Deployed on Heroku for live demo.
-- Static files managed with WhiteNoise.
-- Continuous deployment via Git.
+
+Heroku
+ is a cloud platform that lets developers create, deploy, monitor and manage apps.
+
+You will need a Heroku log-in to be able to deploy a website to Heroku.
+
+Once you have logged into Heroku:
+
+Click 'New' > 'Create new app'
+
+Choose a unique name, choose your region and press 'Create app'
+
+Click on 'Settings' and then 'Reveal Config Vars'
+
+Add a key of 'DISABLE_COLLECTSTATIC' with a value of '1'.
+
+Add a key of 'DATABASE_URL' - the value will be the URL you were emailed when creating your database.
+
+Add a key of 'SECRET_KEY' - the value will be any random secret key (google 'secret key generator' and use it to generate a random string of numbers, letters and characters)
+
+In your terminal, type the code you will need to install project requirements:
+
+pip3 install gunicorn~=20.1
+
+pip3 install -r requirements.txt
+
+pip3 freeze --local > requirements.txt
+
+Create an 'env.py' file at the root directory which contains the following:
+
+import os
+
+os.environ["DATABASE_URL"]='CI database URL'
+
+os.environ["SECRET_KEY"]=" Your secret key"
+
+Create a file at the root directory called Procfile. In this file enter: "web: gunicorn my_project.wsgi" (without the quotes)
+
+In settings.py, set DEBUG to False.
+
+YOU SHOULD ALWAYS SET DEBUG TO FALSE BEFORE DEPLOYING FOR SECURITY
+
+Add ",'.herokuapp.com' " (without the double quotes) to the ALLOWED_HOSTS list in settings.py
+
+Add, commit and push your code.
+
+Go back to Heroku, click on the 'Deploy' tab.
+
+Connect your project to GitHub.
+
+Scroll to the bottom and click 'Deploy Branch' and your project will be deployed!
 
 ## Credit
 
-- Developed by [Your Name/Team].
-- Built with Django, Bootstrap, and open-source libraries.
-- Icons and images from [sources, e.g., FontAwesome, Unsplash].
-- Special thanks to the Django and open-source community.
+As I approach the completion of this project, which marks one of my final modules, I’d like to extend my heartfelt thanks to the Code Institute team for their excellent instruction, continuous support, and professionalism. The knowledge and skills I’ve gained over the last 16 weeks have been truly transformative, and I’m deeply appreciative of the encouragement that helped me reach this important milestone.
 
----
 
-*Made with Django and Bootstrap. For educational purposes only.*
